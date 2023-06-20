@@ -346,9 +346,9 @@ class TFT(commands.Cog):
         embed_msg.add_field(name="Synergies", value=trait_msg, inline=False)
         embed_msg.add_field(name="Unités", value=units_msg, inline=False)
         if placement == 1:
-            embed_msg.add_field(name="Neeko says...", value=talkies.get_excited_line(), inline=False)
+            embed_msg.add_field(value=talkies.get_excited_line(), inline=False)
         elif placement > 4:
-            embed_msg.add_field(name="Neeko says...", value=talkies.get_sad_line(), inline=False)
+            embed_msg.add_field(value=talkies.get_sad_line(), inline=False)
 
         return embed_msg
 

@@ -16,7 +16,7 @@ class Basic(commands.Cog):
 
     @commands.hybrid_command()
     @commands.check(checks.check_if_bot)
-    async def helpmeneeko(self, ctx):
+    async def helpme(self, ctx):
         msg = "\n**//recentmatch** *[region] [summoner]* - Renvoie le match TFT le plus récent pour le joueur spécifié.`\n\
     **//matchhistory** *[region] [summoner]* - Renvoie une liste de match TFT pour le joueur spécifié. Ajoute une réaction pour avoir les détails d'un match!\n\
     **//tftrank** *[region] [summoner]* - Renvoie le rang pour le joueur spécifié.\n\
