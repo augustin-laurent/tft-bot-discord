@@ -1,9 +1,9 @@
 import discord
-from discord.ext import commands
 import keys
+from discord.ext import commands, tasks
 
-headers = keys.headers                  # Header for a Riot API request.
-discord_bot_key = keys.discord_bot_key  # Discord bot key
+headers = keys.headers
+discord_bot_key = keys.discord_bot_key
 intents = discord.Intents.default()
 intents.message_content = True
 

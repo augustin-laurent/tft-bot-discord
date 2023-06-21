@@ -10,7 +10,7 @@ def check_if_bot(ctx):
 
 
 def check_if_owner(ctx):
-    """Check if command is used by the specified user ID"""
+    """Vérifie si la commande a été exécuté par le propriétaire du bot"""
     if ctx.author.id == 562320539364884491:
         return True
     else:
