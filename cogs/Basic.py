@@ -20,9 +20,10 @@ class Basic(commands.Cog):
         msg = "\n**//recentmatch** *[region] [summoner]* - Renvoie le match TFT le plus récent pour le joueur spécifié.`\n\
     **//matchhistory** *[region] [summoner]* - Renvoie une liste de match TFT pour le joueur spécifié. Ajoute une réaction pour avoir les détails d'un match!\n\
     **//tftrank** *[region] [summoner]* - Renvoie le rang pour le joueur spécifié.\n\
+    **//register** *[region] [summoner]* - Enregistre le joueur dans un fichier pour faire un tracking des rangs en permanance.\n\
     **//regions** - Renvoie une liste de code de région.\n\
     **//ping** - Renvoie pong.\n"
-
+    
         embed_msg = discord.Embed(
             colour=discord.Colour.green()
         )
