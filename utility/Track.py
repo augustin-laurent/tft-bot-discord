@@ -9,28 +9,29 @@ import os
 from helpers import checks, create_decoders as decoder, helpers, talkies
 import keys
 
-try:
-    with open('ranks.json', 'r') as f:
-        ranks = json.load(f)
-except FileNotFoundError:
-    print("Le fichier contenant les rangs n'a pas pu être chargé, est-il disponible dans le répertoire source ?")
-
 class Track():
     def __init__(self, bot):
         self.bot = bot
         self.headers = keys.headers
         self.cache_file = "cache.pickle"
 
+        try:
+            if os.path.exists("summoners.json") and os.path.getsize("summoners.json") > 0:
+                with open('summoners.json', 'r') as f:
+                    self.ranks = json.load(f)
+        except FileNotFoundError:
+            print("Le fichier contenant les rangs n'a pas pu être chargé, est-il disponible dans le répertoire source ?")
+
     def get_rank(self, region_code, summonerid):
         """
-        Get rank of a summoner contained in SUMMONERID
+        Enregistre le rang des joueurs contenu dans sumonners.json dans un fichier cache
         """
         try:
             region_route = decoder.region[region_code.upper()]
         except Exception as e:
             print("Erreur lors récupération du code région: ", e)
         try:
-            APIlink = f"https://{region_route}.api.riotgames.com/tft/league/v1/entries/by-summoner/{summonerid}"
+            APIlink = "https://{}.api.riotgames.com/tft/league/v1/entries/by-summoner/{}".format(region_route, summonerid)
             summoner_data = requests.get(APIlink, headers=self.headers)
             return summoner_data[0].get("tier"), summoner_data[0].get("rank"), summoner_data[0].get("summonerName"), summoner_data[0].get("wins"), summoner_data[0].get("losses"), summoner_data[0].get("hotStreak")
         except requests.exceptions.RequestException as e:

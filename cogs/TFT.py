@@ -207,7 +207,7 @@ class TFT(commands.Cog):
     
     @commands.hybrid_command()
     @commands.check(checks.check_if_bot)
-    async def register(self, ctx, region_code, summoner_name):
+    async def register(self, ctx, region_code=None, *, summoner=None):
         """
         Enregistre un nouveau joueur dans la base de données de suivi du bot.
         """
@@ -215,38 +215,45 @@ class TFT(commands.Cog):
             region_route = decoder.region[region_code.upper()]
         except Exception as e:
             print("Erreur lors de la récupération du code région: ", e)
+
         try:
-            APIlink = f"https://{region_route}.api.riotgames.com/tft/summoner/v1/summoners/by-name/{summoner_name}"
+            APIlink = "https://{}.api.riotgames.com/tft/summoner/v1/summoners/by-name/{}".format(region_route, summoner)
             summoner_data = requests.get(APIlink, headers=self.headers)
+
             if summoner_data.status_code == 200:
                 try:
                     summoner_data_json = summoner_data.json()
                     summoner_id = summoner_data_json.get("id")
                     summoner_name = summoner_data_json.get("name")
-                    if os.path.exists("summoners.json") and os.path.getsize("summoners.json") > 0:
-                        with open('../utility/summoners.json', 'r') as f:
+                    if os.path.exists("./utility/summoners.json") and os.path.getsize("./utility/summoners.json") > 0:
+                        with open('./utility/summoners.json', 'r') as f:
                             summoners = json.load(f)
                     else:
                         summoners = {}
-                    if summoner_id not in summoners:
-                        summoners[summoner_id] = summoner_name
-                        with open('../utility/summoners.json', 'w') as f:
+                    if summoner_name.lower() not in summoners:
+                        summoners[summoner_name.lower()] = summoner_id
+                        with open('./utility/summoners.json', 'w') as f:
                             json.dump(summoners, f)
+
                         embed_msg = discord.Embed()
-                        embed_msg.add_field(name="Message", value=f"Le joueur {summoner_name} a bien été enregistré.", inline=False),
+                        embed_msg.add_field(name="Message", value=f"Le joueur `{summoner_name}` a bien été enregistré.", inline=False)
                         embed_msg.colour = discord.Colour.blue()
                         await ctx.send(embed=embed_msg)
                     else:
                         embed_msg = discord.Embed()
-                        embed_msg.add_field(name="Message", value=f"Le joueur {summoner_name} est déjà enregistré.", inline=False),
+                        embed_msg.add_field(name="Message", value=f"Le joueur `{summoner_name}` est déjà enregistré.", inline=False)
                         embed_msg.colour = discord.Colour.green()
                         await ctx.send(embed=embed_msg)
+
                 except json.JSONDecodeError as e:
                     print("Erreur lors du décodage de la réponse JSON: ", e)
+
             else:
                 print("Erreur lors de la requête pour récupérer les données du joueur: ", summoner_data.status_code)
+
         except requests.exceptions.RequestException as e:
             print("Erreur lors de la requête pour récupérer le rang du joueur: ", e)
+
 
     def get_player_puuid(self, summoner_name, region_route):
         """
